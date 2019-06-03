@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherStation", "WeatherSt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtmosphericSensors", "AtmosphericSensors\AtmosphericSensors.csproj", "{2293279E-65E9-438B-A8FB-1E73BD90D24A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtmosphericSensor.tests", "AtmosphericSensor.tests\AtmosphericSensor.tests.csproj", "{C17F23BE-3113-4128-968E-79BE796FBC52}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,26 +67,6 @@ Global
 		{2293279E-65E9-438B-A8FB-1E73BD90D24A}.Release|x64.Build.0 = Release|x64
 		{2293279E-65E9-438B-A8FB-1E73BD90D24A}.Release|x86.ActiveCfg = Release|x86
 		{2293279E-65E9-438B-A8FB-1E73BD90D24A}.Release|x86.Build.0 = Release|x86
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|ARM.Build.0 = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|x64.Build.0 = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Debug|x86.Build.0 = Debug|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|ARM.ActiveCfg = Release|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|ARM.Build.0 = Release|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|ARM64.Build.0 = Release|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|x64.ActiveCfg = Release|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|x64.Build.0 = Release|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|x86.ActiveCfg = Release|Any CPU
-		{C17F23BE-3113-4128-968E-79BE796FBC52}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
