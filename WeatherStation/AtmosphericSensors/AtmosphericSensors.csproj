@@ -120,6 +120,10 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AtmosphericSensorBME280.cs" />
+    <Compile Include="HardwareIO\I2cSensor.cs" />
+    <Compile Include="HardwareIO\II2cSensor.cs" />
+    <Compile Include="IAtmosphericSensors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\AtmosphericSensors.rd.xml" />
   </ItemGroup>
