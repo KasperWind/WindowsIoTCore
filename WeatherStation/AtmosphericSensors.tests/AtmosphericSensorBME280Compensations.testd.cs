@@ -5,7 +5,7 @@ using AtmosphericSensors.HardwareIO;
 
 namespace AtmosphericSensors.tests
 {
-    public class AtmosphericSensorBME280_tests
+    public class AtmosphericSensorBME280Compensations_tests
     {
 
     }
