@@ -121,6 +121,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AtmosphericSensorBME280.cs" />
+    <Compile Include="AtmosphericSensorBME280Compensations.cs" />
     <Compile Include="HardwareIO\I2cSensor.cs" />
     <Compile Include="HardwareIO\II2cSensor.cs" />
     <Compile Include="IAtmosphericSensors.cs" />
