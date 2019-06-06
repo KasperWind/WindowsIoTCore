@@ -46,7 +46,7 @@ namespace AtmosphericSensors
             Humitidy[5] = (bme280sensor.ReadRegister(0xE6) << 4) + ((bme280sensor.ReadRegister(0xE5) >> 4) & 0x0F);
             Humitidy[6] = bme280sensor.ReadRegister(0xE7);
         }
-
+        
         public double CalculateTemperature(long rawTemperature)
         {
             var step1 = (((rawTemperature >> 3) - (Temperature[1] << 1)) * Temperature[2]) >> 11;
@@ -54,23 +54,27 @@ namespace AtmosphericSensors
             FineTemperature = step1 + step2;
             return ((FineTemperature * 5 + 128) >> 8) / 100.0;
         }
-
         public double CalculatePressure(long rawPressure)
         {
-            var step1 = FineTemperature - 128000;
-            var step2 = step1 * step1 * Pressure[6];
-            var step3 = step2 + (step1 * (Pressure[5] << 17));
-            var step4 = step3 + (Pressure[4] << 35);
-            var step5 = ((step1 * step1 * Pressure[3]) >> 8) + ((step1 * Pressure[2]) << 12);
-            var step6 = ((1 << 47) + step5) * (Pressure[1] >> 33);
-            if (step5 == 0)
+            long step1 = FineTemperature - 128000;
+            long step2 = step1 * step1 * Pressure[6];
+            long step3 = step2 + (step1 * (Pressure[5] << 17));
+            long step4 = step3 + (Pressure[4] << 35);
+            long step5 = ((step1 * step1 * Pressure[3]) >> 8) + ((step1 * Pressure[2]) << 12);
+            long step6 = (((1L << 47) + step5) * Pressure[1]) >> 33;
+            if (step6 == 0)
                 return 0;
-            var pressure = 1048576 - rawPressure;
-            pressure = (((pressure << 31) - step4) * 3125) / step6;
-            var step7 = (Pressure[9] * (pressure >> 13) * (pressure >> 13)) >> 25;
-            var step8 = (Pressure[8] * pressure) >> 19;
+            long pressure = 1048576L - rawPressure;
+            pressure = (((pressure << 31) - step4) * 3125L) / step6;
+            long step7 = (Pressure[9] * (pressure >> 13) * (pressure >> 13)) >> 25;
+            long step8 = (Pressure[8] * pressure) >> 19;
             pressure = ((pressure + step7 + step8) >> 8) + (Pressure[7] << 4);
-            return (double)pressure / 256;
+            return (pressure / 256.0);
+        }
+
+        public double CalculateHumidity(long rawHumidityInput)
+        {
+            return 10;
         }
     }
 }
