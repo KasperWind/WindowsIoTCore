@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherStation", "WeatherSt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtmosphericSensors", "AtmosphericSensors\AtmosphericSensors.csproj", "{2293279E-65E9-438B-A8FB-1E73BD90D24A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtmosphericSensors.tests", "AtmosphericSensors.tests\AtmosphericSensors.tests.csproj", "{B7185ACE-3209-4A23-95F8-E35E3BE974DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,32 @@ Global
 		{2293279E-65E9-438B-A8FB-1E73BD90D24A}.Release|x64.Build.0 = Release|x64
 		{2293279E-65E9-438B-A8FB-1E73BD90D24A}.Release|x86.ActiveCfg = Release|x86
 		{2293279E-65E9-438B-A8FB-1E73BD90D24A}.Release|x86.Build.0 = Release|x86
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|ARM.ActiveCfg = Debug|ARM
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|ARM.Build.0 = Debug|ARM
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|ARM.Deploy.0 = Debug|ARM
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|ARM64.Build.0 = Debug|ARM64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|x64.ActiveCfg = Debug|x64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|x64.Build.0 = Debug|x64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|x64.Deploy.0 = Debug|x64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|x86.ActiveCfg = Debug|x86
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|x86.Build.0 = Debug|x86
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Debug|x86.Deploy.0 = Debug|x86
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|Any CPU.ActiveCfg = Release|x86
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|ARM.ActiveCfg = Release|ARM
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|ARM.Build.0 = Release|ARM
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|ARM.Deploy.0 = Release|ARM
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|ARM64.ActiveCfg = Release|ARM64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|ARM64.Build.0 = Release|ARM64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|ARM64.Deploy.0 = Release|ARM64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|x64.ActiveCfg = Release|x64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|x64.Build.0 = Release|x64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|x64.Deploy.0 = Release|x64
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|x86.ActiveCfg = Release|x86
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|x86.Build.0 = Release|x86
+		{B7185ACE-3209-4A23-95F8-E35E3BE974DD}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
