@@ -22,7 +22,7 @@ namespace AtmosphericSensors
         public AtmosphericSensorBME280(II2cSensor bme280sensor) //0x77
         {
             this.bme280sensor = bme280sensor;
-            this.compensations = new AtmosphericSensorBME280Compensations(bme280sensor);
+            compensations = new AtmosphericSensorBME280Compensations(bme280sensor);
         }
 
         internal long ReadRawHumidity()
