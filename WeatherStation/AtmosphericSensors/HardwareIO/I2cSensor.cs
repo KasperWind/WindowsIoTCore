@@ -33,7 +33,7 @@ namespace AtmosphericSensors.HardwareIO
             var data = new byte[2];
             data[0] = ReadRegister(addressLSB);
             data[1] = ReadRegister(addressMSB);
-            return (long)(data[0] << 8 | data[1]);
+            return data[0] << 8 | data[1];
         }
 
         public long Read20bitRegister(byte addressLSB, byte address, byte addressMSB)
@@ -42,7 +42,7 @@ namespace AtmosphericSensors.HardwareIO
             data[0] = ReadRegister(addressLSB);
             data[1] = ReadRegister(address);
             data[2] = ReadRegister(addressMSB);
-            return (long)(data[0] << 12 | data[1] << 4 | ((data[2] >> 4) & 0x0F));
+            return data[0] << 12 | data[1] << 4 | ((data[2] >> 4) & 0x0F);
         }
     }
 }
