@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.I2c;
 
@@ -10,38 +12,42 @@ namespace AtmosphericSensors.HardwareIO
 
         public I2cSensor(byte i2cAddress)
         {
-            CreateDevice(i2cAddress);
+            Task.WaitAll(CreateDevice(i2cAddress));
         }
 
-        private async void CreateDevice(byte i2cAddress)
+        private async Task CreateDevice(byte i2cAddress)
         {
             var settings = new I2cConnectionSettings(i2cAddress);
-            var deviceSelector = I2cDevice.GetDeviceSelector();
-            var devices = await DeviceInformation.FindAllAsync(deviceSelector);
-            i2cSensor = await I2cDevice.FromIdAsync(devices[0].Id, settings);
+            var controller = await I2cController.GetDefaultAsync();
+            i2cSensor = controller.GetDevice(settings);
         }
 
         public byte ReadRegister(byte registerAddress)
         {
             byte[] read = new byte[1];
-            i2cSensor.WriteRead(new byte[registerAddress], read);
+            i2cSensor.Write(new byte[registerAddress]);
+            Thread.Sleep(1);
+            i2cSensor.Read(read);
             return read[0];
         }
 
         public long Read16bitRegister(byte addressLSB, byte addressMSB)
         {
+            byte[] write = { addressLSB, addressMSB };
             var data = new byte[2];
-            data[0] = ReadRegister(addressLSB);
-            data[1] = ReadRegister(addressMSB);
+            i2cSensor.Write(write);
+            Thread.Sleep(1);
+            i2cSensor.Read(data);
             return data[0] << 8 | data[1];
         }
 
         public long Read20bitRegister(byte addressLSB, byte address, byte addressMSB)
         {
+            byte[] write = { addressLSB, address, addressMSB };
             var data = new byte[3];
-            data[0] = ReadRegister(addressLSB);
-            data[1] = ReadRegister(address);
-            data[2] = ReadRegister(addressMSB);
+            i2cSensor.Write(write);
+            Thread.Sleep(1);
+            i2cSensor.Read(data);
             return data[0] << 12 | data[1] << 4 | ((data[2] >> 4) & 0x0F);
         }
     }
