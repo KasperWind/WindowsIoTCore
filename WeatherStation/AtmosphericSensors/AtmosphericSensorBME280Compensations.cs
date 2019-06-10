@@ -12,7 +12,7 @@ namespace AtmosphericSensors
 
         public long[] Temperature { get; private set; } = new long[4];
         public long[] Pressure { get; private set; } = new long[10];
-        public long[] Humitidy { get; private set; } = new long[7];
+        public long[] Humidity { get; private set; } = new long[7];
         public long FineTemperature { get; private set; } = 0;
 
         public AtmosphericSensorBME280Compensations(II2cSensor bme280sensor)
@@ -39,12 +39,12 @@ namespace AtmosphericSensors
 
         public void ReadHumitidyCompensation(II2cSensor bme280sensor)
         {
-            Humitidy[1] = bme280sensor.ReadRegister(0xA1);
-            Humitidy[2] = bme280sensor.Read16bitRegister(0xE1, 0xE2);
-            Humitidy[3] = bme280sensor.ReadRegister(0xE3);
-            Humitidy[4] = (bme280sensor.ReadRegister(0xE4) << 4) + (bme280sensor.ReadRegister(0xE5) & 0x0F);
-            Humitidy[5] = (bme280sensor.ReadRegister(0xE6) << 4) + ((bme280sensor.ReadRegister(0xE5) >> 4) & 0x0F);
-            Humitidy[6] = bme280sensor.ReadRegister(0xE7);
+            Humidity[1] = bme280sensor.ReadRegister(0xA1);
+            Humidity[2] = bme280sensor.Read16bitRegister(0xE1, 0xE2);
+            Humidity[3] = bme280sensor.ReadRegister(0xE3);
+            Humidity[4] = (bme280sensor.ReadRegister(0xE4) << 4) + (bme280sensor.ReadRegister(0xE5) & 0x0F);
+            Humidity[5] = (bme280sensor.ReadRegister(0xE6) << 4) + ((bme280sensor.ReadRegister(0xE5) >> 4) & 0x0F);
+            Humidity[6] = bme280sensor.ReadRegister(0xE7);
         }
         
         public double CalculateTemperature(long rawTemperature)
@@ -75,11 +75,42 @@ namespace AtmosphericSensors
         public double CalculateHumidity(long rawHumidityInput)
         {
             long step1 = FineTemperature - 76800;
-            long step2 = (((rawHumidityInput << 14) - ((Humitidy[4]) << 20) - (Humitidy[5] * step1) + (16384L)) >> 15) * ((((((((step1 * (Humitidy[6])) >> 10) * (((step1 * (Humitidy[3])) >> 11) + (32768L))) >> 10) + (2097152L)) * Humitidy[2]) + 8192L) >> 14);
-            long step3 = step2 - (((((step2 >> 15) * (step2 >> 15)) >> 7) * (Humitidy[1])) >> 4);
+            long step2 = (((rawHumidityInput << 14) - ((Humidity[4]) << 20) - (Humidity[5] * step1) + (16384L)) >> 15) * ((((((((step1 * (Humidity[6])) >> 10) * (((step1 * (Humidity[3])) >> 11) + (32768L))) >> 10) + (2097152L)) * Humidity[2]) + 8192L) >> 14);
+            long step3 = step2 - (((((step2 >> 15) * (step2 >> 15)) >> 7) * (Humidity[1])) >> 4);
             long step4 = step3 < 0 ? 0 : step3;
             long step5 = step4 > 419430400 ? 419430400 : step4;
             return (step5 >> 12) / 1024.0;
         }
-}
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            FineTemperatureToString(sb);
+            TemperatureToString(sb);
+            for (int i = 0; i < Humidity.Length; i++)
+            {
+
+            }
+            return sb.ToString();
+        }
+
+        private void TemperatureToString(StringBuilder sb)
+        {
+            for (int i = 0; i < Temperature.Length; i++)
+            {
+                sb.Append("Temperature[");
+                sb.Append(i.ToString());
+                sb.Append("]:\"");
+                sb.Append(Temperature[i].ToString());
+                sb.Append("\";");
+            }
+        }
+
+        private void FineTemperatureToString(StringBuilder sb)
+        {
+            sb.Append("{FineTemperature:\"");
+            sb.Append(FineTemperature.ToString());
+            sb.Append("\";");
+        }
+    }
 }
