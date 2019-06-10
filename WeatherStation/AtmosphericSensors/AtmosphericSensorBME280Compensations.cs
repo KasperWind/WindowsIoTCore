@@ -87,22 +87,32 @@ namespace AtmosphericSensors
             var sb = new StringBuilder();
             FineTemperatureToString(sb);
             TemperatureToString(sb);
+            HumidityToString(sb);
+            PressureToString(sb);
+            return sb.ToString();
+        }
+
+        private void PressureToString(StringBuilder sb)
+        {
+            for (int i = 0; i < Pressure.Length; i++)
+            {
+                CreateArrayEntry("Pressure", sb, i, Pressure[i]);
+            }
+        }
+
+        private void HumidityToString(StringBuilder sb)
+        {
             for (int i = 0; i < Humidity.Length; i++)
             {
-
+                CreateArrayEntry("Humidity", sb, i, Humidity[i]);
             }
-            return sb.ToString();
         }
 
         private void TemperatureToString(StringBuilder sb)
         {
             for (int i = 0; i < Temperature.Length; i++)
             {
-                sb.Append("Temperature[");
-                sb.Append(i.ToString());
-                sb.Append("]:\"");
-                sb.Append(Temperature[i].ToString());
-                sb.Append("\";");
+                CreateArrayEntry("Temperature",sb, i, Temperature[i]);
             }
         }
 
@@ -110,6 +120,16 @@ namespace AtmosphericSensors
         {
             sb.Append("{FineTemperature:\"");
             sb.Append(FineTemperature.ToString());
+            sb.Append("\";");
+        }
+
+        private void CreateArrayEntry(string variable, StringBuilder sb, int iterationValue, long actualValue)
+        {
+            sb.Append(variable);
+            sb.Append("[");
+            sb.Append(iterationValue.ToString());
+            sb.Append("]:\"");
+            sb.Append(actualValue.ToString());
             sb.Append("\";");
         }
     }

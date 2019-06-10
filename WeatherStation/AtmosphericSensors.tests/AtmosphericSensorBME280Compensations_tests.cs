@@ -55,9 +55,9 @@ namespace AtmosphericSensors.tests
             {
                 Assert.AreEqual(expected, actualObject.Pressure[i]);
             }
-            for (int i = 1; i < actualObject.Humitidy.Length; i++)
+            for (int i = 1; i < actualObject.Humidity.Length; i++)
             {
-                Assert.AreEqual(expectedHumitidy[i], actualObject.Humitidy[i]);
+                Assert.AreEqual(expectedHumitidy[i], actualObject.Humidity[i]);
             }
         }
 
