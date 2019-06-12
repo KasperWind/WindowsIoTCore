@@ -122,6 +122,7 @@
   <ItemGroup>
     <Compile Include="BME280\BME280.cs" />
     <Compile Include="BME280\BME280Compensations.cs" />
+    <Compile Include="BME280\BME280Registers.cs" />
     <Compile Include="HardwareIO\I2cSensor.cs" />
     <Compile Include="HardwareIO\II2cSensor.cs" />
     <Compile Include="IAtmosphericSensors.cs" />
