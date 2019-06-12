@@ -22,35 +22,48 @@ namespace AtmosphericSensors.HardwareIO
             i2cSensor = controller.GetDevice(settings);
         }
 
-        public byte ReadRegister(byte registerAddress)
+        private byte[] WriteThenRead(byte address, int size)
         {
-            byte[] write = { registerAddress, (byte)(registerAddress + 1) };
-            byte[] read = new byte[2];
-            WriteThenRead(write, read);
+            byte[] write = { address };
+            byte[] read = new byte[size];
+            Array.Fill<byte>(read, 0x00);
+            i2cSensor.WriteRead(write, read);
+            return read;
+        }
+
+        public byte ReadRegister(byte address)
+        {
+            var read = WriteThenRead(address, 1);
             return read[0];
         }
 
-        private void WriteThenRead(byte[] write, byte[] read)
+        public UInt16 ReadUInt16Register(byte address)
         {
-            i2cSensor.Write(write);
-            Thread.Sleep(1);
-            i2cSensor.Read(read);
+            var read = WriteThenRead(address, 2);
+            int[] reading = new int[2];
+            reading[0] = read[0];
+            reading[1] = read[1] << 8;
+            return (UInt16)(reading[1] + reading[0]);
+            
         }
 
-        public long Read16bitRegister(byte addressLSB, byte addressMSB)
+        public Int16 ReadInt16Register(byte address)
         {
-            byte[] write = { addressLSB, addressMSB };
-            var read = new byte[2];
-            WriteThenRead(write, read);
-            return read[0] << 8 | read[1];
+            var read = WriteThenRead(address, 2);
+            int[] reading = new int[2];
+            reading[0] = read[0];
+            reading[1] = read[1] << 8;
+            return (Int16)(reading[1] + reading[0]);
         }
 
-        public long Read20bitRegister(byte addressLSB, byte address, byte addressMSB)
+        public Int32 Read20bitRegister(byte address)
         {
-            byte[] write = { addressLSB, address, addressMSB };
-            var read = new byte[3];
-            WriteThenRead(write, read);
-            return read[0] << 12 | read[1] << 4 | ((read[2] >> 4) & 0x0F);
+            var msb = ReadRegister(address);
+            var lsb = ReadRegister((byte)(address + 1));
+            var xlsb = ReadRegister((byte)(address + 2));
+
+            return ((msb << 12) + (lsb << 4) + (xlsb >> 4));
         }
+
     }
 }
