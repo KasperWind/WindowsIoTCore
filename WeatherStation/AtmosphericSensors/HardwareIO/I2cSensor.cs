@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.I2c;
+using System.Linq;
 
 namespace AtmosphericSensors.HardwareIO
 {
@@ -65,5 +66,13 @@ namespace AtmosphericSensors.HardwareIO
             return ((msb << 12) + (lsb << 4) + (xlsb >> 4));
         }
 
+        public void WriteRegister(byte address, byte[] data)
+        {
+            byte[] addressArray = { address };
+            byte[] write = new byte[addressArray.Length + data.Length];
+            addressArray.CopyTo(write, 0);
+            data.CopyTo(write, addressArray.Length);
+            i2cSensor.Write(write);
+        }
     }
 }
