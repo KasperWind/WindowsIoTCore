@@ -1,9 +1,12 @@
-﻿namespace AtmosphericSensors.HardwareIO
+﻿using System;
+
+namespace AtmosphericSensors.HardwareIO
 {
     public interface II2cSensor
     {
         byte ReadRegister(byte registerAddress);
-        long Read16bitRegister(byte addressLSB, byte addressMSB);
-        long Read20bitRegister(byte addressLSB, byte address, byte addressMSB);
+        UInt16 ReadUInt16Register(byte address);
+        Int16 ReadInt16Register(byte address);
+        Int32 Read20bitRegister(byte address);
     }
 }
