@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AtmosphericSensors
+namespace AtmosphericSensors.BME280
 {
     public class AtmosphericSensorBME280Compensations
     {
