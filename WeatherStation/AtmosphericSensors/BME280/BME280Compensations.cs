@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AtmosphericSensors.BME280
 {
-    public class AtmosphericSensorBME280Compensations
+    public class BME280Compensations
     {
 
         public long[] Temperature { get; private set; } = new long[4];
@@ -15,7 +15,7 @@ namespace AtmosphericSensors.BME280
         public long[] Humidity { get; private set; } = new long[7];
         public long FineTemperature { get; private set; } = 0;
 
-        public AtmosphericSensorBME280Compensations(II2cSensor bme280sensor)
+        public BME280Compensations(II2cSensor bme280sensor)
         {
             ReadTemperatureCompensation(bme280sensor);
             ReadHumitidyCompensation(bme280sensor);

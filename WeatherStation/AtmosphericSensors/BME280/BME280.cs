@@ -12,10 +12,10 @@ using System.Diagnostics;
 [assembly: InternalsVisibleTo("AtmosphericSensors.tests")]
 namespace AtmosphericSensors.BME280
 {
-    public class AtmosphericSensorBME280 : ITemperatureSensor, IBarometricPressureSensor, IHumiditySensor
+    public class BME280 : ITemperatureSensor, IBarometricPressureSensor, IHumiditySensor
     {
         private readonly II2cSensor bme280sensor;
-        private readonly AtmosphericSensorBME280Compensations compensations;
+        private readonly BME280Compensations compensations;
 
         private DateTimeOffset lastReading = DateTimeOffset.MinValue;
         private const int minTimeBetweenReadings = 500;
@@ -24,10 +24,10 @@ namespace AtmosphericSensors.BME280
         private long rawHumidity = 0L;
         private long rawPressure = 0L;
         
-        public AtmosphericSensorBME280(II2cSensor bme280sensor) //0x77
+        public BME280(II2cSensor bme280sensor) //0x77
         {
             this.bme280sensor = bme280sensor;
-            compensations = new AtmosphericSensorBME280Compensations(bme280sensor);
+            compensations = new BME280Compensations(bme280sensor);
             TryBurstRead();
             Debug.WriteLine("AthomspericSensorFinishedLoading:");
             Debug.Write("\t");
