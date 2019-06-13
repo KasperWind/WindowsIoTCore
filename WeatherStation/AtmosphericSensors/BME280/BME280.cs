@@ -28,8 +28,10 @@ namespace AtmosphericSensors.BME280
         {
             this.bme280sensor = bme280sensor;
             compensations = new BME280Compensations(bme280sensor);
+            writeControl();
+            writeHumidityControl();
             TryBurstRead();
-            Debug.WriteLine("AthomspericSensorFinishedLoading:");
+            Debug.WriteLine("AthomspericSensorFinishedLoading: {0}", bme280sensor.ReadRegister((byte)BME280Registers.ChipId));
             Debug.Write("\t");
             Debug.WriteLine(compensations.ToString());
         }
@@ -50,6 +52,18 @@ namespace AtmosphericSensors.BME280
         {
             TryBurstRead();
             return compensations.CalculateHumidity(rawHumidity);
+        }
+
+        internal void writeControl()
+        {
+            bme280sensor.WriteRegister((byte)BME280Registers.Control, new byte[] { 0x3F });
+            System.Threading.Thread.Sleep(20);
+        }
+
+        internal void writeHumidityControl()
+        {
+            bme280sensor.WriteRegister((byte)BME280Registers.ControlHumid, new byte[] { 0x03 });
+            System.Threading.Thread.Sleep(20);
         }
 
         internal void TryBurstRead()
@@ -76,19 +90,19 @@ namespace AtmosphericSensors.BME280
 
         internal void ReadRawTemperature()
         {
-            rawTemperature = bme280sensor.Read20bitRegister(0xFA, 0xFB, 0xFC);
+            rawTemperature = bme280sensor.Read20bitRegister((byte)BME280Registers.TemperatureDataMSB);
             Debug.WriteLine("Raw Temperature: {0}", rawTemperature);
         }
 
         internal void ReadRawHumidity()
         {
-            rawHumidity = bme280sensor.Read16bitRegister(0xFE, 0xFD);
+            rawHumidity = bme280sensor.ReadInt16Register((byte)BME280Registers.HumidityDataMSB);
             Debug.WriteLine("Raw Humidity: {0}", rawHumidity);
         }
 
         internal void ReadRawPressure()
         {
-            rawPressure = bme280sensor.Read20bitRegister(0xF7, 0xF8, 0xF9);
+            rawPressure = bme280sensor.Read20bitRegister((byte)BME280Registers.PressureDataMSB);
             Debug.WriteLine("Raw Pressure: {0}", rawPressure);
         }
 

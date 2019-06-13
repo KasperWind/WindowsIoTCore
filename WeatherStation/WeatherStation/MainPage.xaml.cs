@@ -12,6 +12,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using AtmosphericSensors.HardwareIO;
+using AtmosphericSensors;
+using System.Diagnostics;
+using System.Timers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -25,6 +29,46 @@ namespace WeatherStation
         public MainPage()
         {
             this.InitializeComponent();
+            var timer = new Timer(1000);
+            timer.Elapsed += Timer_Elapsed;
+            timer.AutoReset = false;
+            LoadTemperature();
+            timer.Start();
+        }
+
+        I2cSensor sensor = null;
+        AtmosphericSensors.BME280.BME280 tester = null;
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            var timer = (Timer)sender;
+            LoadTemperature();
+            timer.Start();
+        }
+
+        private void LoadTemperatureButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadTemperature();
+        }
+
+        private void LoadTemperature()
+        {
+            try
+            {
+                if (sensor == null)
+                {
+                    sensor = new I2cSensor(0x77);
+                }
+                if (tester == null)
+                {
+                    tester = new AtmosphericSensors.BME280.BME280(sensor);
+                }                
+                Debug.WriteLine("Temperature: {0}; Humidity: {1}; Pressure: {2}", tester.GetTemperature(), tester.GetHumidity(), tester.GetBarometricPressure());
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

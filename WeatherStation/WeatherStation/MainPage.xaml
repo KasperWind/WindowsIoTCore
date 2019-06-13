@@ -9,6 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Button Content="Load temperature" Margin="365,412,0,0" VerticalAlignment="Top" Height="100" Width="200" Click="LoadTemperatureButton_Click"/>
 
     </Grid>
 </Page>

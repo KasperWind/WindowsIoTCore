@@ -153,6 +153,12 @@
       <Version>6.2.8</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AtmosphericSensors\AtmosphericSensors.csproj">
+      <Project>{2293279e-65e9-438b-a8fb-1e73bd90d24a}</Project>
+      <Name>AtmosphericSensors</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

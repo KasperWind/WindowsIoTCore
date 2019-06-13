@@ -24,27 +24,28 @@ namespace AtmosphericSensors.BME280
 
         public void ReadTemperatureCompensation(II2cSensor bme280sensor)
         {
-            Temperature[1] = bme280sensor.Read16bitRegister(0x88, 0x89);
-            Temperature[2] = bme280sensor.Read16bitRegister(0x8a, 0x8b);
-            Temperature[3] = bme280sensor.Read16bitRegister(0x8C, 0x8D);
+            Temperature[1] = bme280sensor.ReadUInt16Register((byte)BME280Registers.DigT1);
+            Temperature[2] = bme280sensor.ReadInt16Register((byte)BME280Registers.DigT2);
+            Temperature[3] = bme280sensor.ReadInt16Register((byte)BME280Registers.DigT3);
         }
 
         public void ReadPressureCompensation(II2cSensor bme280sensor)
         {
-            for (int i = 1; i < 10; i++)
+            Pressure[1] = bme280sensor.ReadUInt16Register((byte)BME280Registers.DigP1);
+            for (int i = 2; i < 10; i++)
             {
-                Pressure[i] = bme280sensor.Read16bitRegister((byte)(0x8E + i - 1), (byte)(0x8F + 0x01 + i - 1));
+                Pressure[i] = bme280sensor.ReadInt16Register((byte)((byte)BME280Registers.DigP1 + i - 1));
             }
         }
 
         public void ReadHumitidyCompensation(II2cSensor bme280sensor)
         {
-            Humidity[1] = bme280sensor.ReadRegister(0xA1);
-            Humidity[2] = bme280sensor.Read16bitRegister(0xE1, 0xE2);
-            Humidity[3] = bme280sensor.ReadRegister(0xE3);
-            Humidity[4] = (bme280sensor.ReadRegister(0xE4) << 4) + (bme280sensor.ReadRegister(0xE5) & 0x0F);
-            Humidity[5] = (bme280sensor.ReadRegister(0xE6) << 4) + ((bme280sensor.ReadRegister(0xE5) >> 4) & 0x0F);
-            Humidity[6] = bme280sensor.ReadRegister(0xE7);
+            Humidity[1] = bme280sensor.ReadRegister((byte)BME280Registers.DigH1);
+            Humidity[2] = bme280sensor.ReadInt16Register((byte)BME280Registers.DigH2);
+            Humidity[3] = bme280sensor.ReadRegister((byte)BME280Registers.DigH3);
+            Humidity[4] = (bme280sensor.ReadRegister((byte)BME280Registers.DigH4) << 4) | (bme280sensor.ReadRegister((byte)BME280Registers.DigH4 + 1) & 0x0F);
+            Humidity[5] = (bme280sensor.ReadRegister((byte)BME280Registers.DigH5 + 1) << 4) | ((bme280sensor.ReadRegister((byte)BME280Registers.DigH5) >> 4) & 0x0F);
+            Humidity[6] = bme280sensor.ReadRegister((byte)BME280Registers.DigH6);
         }
         
         public double CalculateTemperature(long rawTemperature)
