@@ -62,7 +62,6 @@ namespace AtmosphericSensors.HardwareIO
             var msb = ReadRegister(address);
             var lsb = ReadRegister((byte)(address + 1));
             var xlsb = ReadRegister((byte)(address + 2));
-
             return ((msb << 12) + (lsb << 4) + (xlsb >> 4));
         }
 
