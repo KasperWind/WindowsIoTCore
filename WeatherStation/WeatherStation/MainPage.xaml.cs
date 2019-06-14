@@ -32,8 +32,10 @@ namespace WeatherStation
             var timer = new Timer(1000);
             timer.Elapsed += Timer_Elapsed;
             timer.AutoReset = false;
+            System.Threading.Thread.Sleep(500);
             LoadTemperature();
             timer.Start();
+
         }
 
         I2cSensor sensor = null;
@@ -55,6 +57,7 @@ namespace WeatherStation
         {
             try
             {
+                
                 if (sensor == null)
                 {
                     sensor = new I2cSensor(0x77);
@@ -62,8 +65,8 @@ namespace WeatherStation
                 if (tester == null)
                 {
                     tester = new AtmosphericSensors.BME280.BME280(sensor);
-                }                
-                Debug.WriteLine("Temperature: {0}; Humidity: {1}; Pressure: {2}", tester.GetTemperature(), tester.GetHumidity(), tester.GetBarometricPressure());
+                }
+                Debug.WriteLine("Temperature: {0:F3}°C; Humidity: {1:F3}%rH; Pressure: {2:F3}hPa", tester.GetTemperature(), tester.GetHumidity(), tester.GetBarometricPressure());
             }
             catch (Exception)
             {
