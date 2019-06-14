@@ -20,16 +20,16 @@ namespace AtmosphericSensors.BME280
         private DateTimeOffset lastReading = DateTimeOffset.MinValue;
         private const int minTimeBetweenReadings = 500;
 
-        private long rawTemperature = 0L;
-        private long rawHumidity = 0L;
-        private long rawPressure = 0L;
+        private int rawTemperature = 0;
+        private int rawHumidity = 0;
+        private int rawPressure = 0;
         
         public BME280(II2cSensor bme280sensor) //0x77
         {
             this.bme280sensor = bme280sensor;
             compensations = new BME280Compensations(bme280sensor);
-            writeControl();
-            writeHumidityControl();
+            WriteControl();
+            WriteHumidityControl();
             TryBurstRead();
             Debug.WriteLine("AthomspericSensorFinishedLoading: {0}", bme280sensor.ReadRegister((byte)BME280Registers.ChipId));
             Debug.Write("\t");
@@ -54,13 +54,13 @@ namespace AtmosphericSensors.BME280
             return compensations.CalculateHumidity(rawHumidity);
         }
 
-        internal void writeControl()
+        internal void WriteControl()
         {
             bme280sensor.WriteRegister((byte)BME280Registers.Control, new byte[] { 0x3F });
             System.Threading.Thread.Sleep(20);
         }
 
-        internal void writeHumidityControl()
+        internal void WriteHumidityControl()
         {
             bme280sensor.WriteRegister((byte)BME280Registers.ControlHumid, new byte[] { 0x03 });
             System.Threading.Thread.Sleep(20);
@@ -91,19 +91,18 @@ namespace AtmosphericSensors.BME280
         internal void ReadRawTemperature()
         {
             rawTemperature = bme280sensor.Read20bitRegister((byte)BME280Registers.TemperatureDataMSB);
-            Debug.WriteLine("Raw Temperature: {0}", rawTemperature);
         }
 
         internal void ReadRawHumidity()
         {
-            rawHumidity = bme280sensor.ReadInt16Register((byte)BME280Registers.HumidityDataMSB);
-            Debug.WriteLine("Raw Humidity: {0}", rawHumidity);
+            byte msb = bme280sensor.ReadRegister((byte)BME280Registers.HumidityDataMSB);
+            byte lsb = bme280sensor.ReadRegister((byte)BME280Registers.HumidityDataLSB);
+            rawHumidity = (msb << 8) + lsb;
         }
 
         internal void ReadRawPressure()
         {
             rawPressure = bme280sensor.Read20bitRegister((byte)BME280Registers.PressureDataMSB);
-            Debug.WriteLine("Raw Pressure: {0}", rawPressure);
         }
 
     }

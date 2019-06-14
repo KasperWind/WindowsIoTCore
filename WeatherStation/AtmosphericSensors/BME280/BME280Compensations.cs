@@ -13,7 +13,7 @@ namespace AtmosphericSensors.BME280
         public long[] Temperature { get; private set; } = new long[4];
         public long[] Pressure { get; private set; } = new long[10];
         public long[] Humidity { get; private set; } = new long[7];
-        public long FineTemperature { get; private set; } = 0;
+        public int FineTemperature { get; private set; } = 0;
 
         public BME280Compensations(II2cSensor bme280sensor)
         {
@@ -34,53 +34,58 @@ namespace AtmosphericSensors.BME280
             Pressure[1] = bme280sensor.ReadUInt16Register((byte)BME280Registers.DigP1);
             for (int i = 2; i < 10; i++)
             {
-                Pressure[i] = bme280sensor.ReadInt16Register((byte)((byte)BME280Registers.DigP1 + i - 1));
+                Pressure[i] = bme280sensor.ReadInt16Register((byte)((int)BME280Registers.DigP2 + ((i - 2) * 2)  ));
             }
         }
 
         public void ReadHumitidyCompensation(II2cSensor bme280sensor)
         {
             Humidity[1] = bme280sensor.ReadRegister((byte)BME280Registers.DigH1);
-            Humidity[2] = bme280sensor.ReadInt16Register((byte)BME280Registers.DigH2);
+            Humidity[2] = (Int16)bme280sensor.ReadUInt16Register((byte)BME280Registers.DigH2);
             Humidity[3] = bme280sensor.ReadRegister((byte)BME280Registers.DigH3);
-            Humidity[4] = (bme280sensor.ReadRegister((byte)BME280Registers.DigH4) << 4) | (bme280sensor.ReadRegister((byte)BME280Registers.DigH4 + 1) & 0x0F);
-            Humidity[5] = (bme280sensor.ReadRegister((byte)BME280Registers.DigH5 + 1) << 4) | ((bme280sensor.ReadRegister((byte)BME280Registers.DigH5) >> 4) & 0x0F);
-            Humidity[6] = bme280sensor.ReadRegister((byte)BME280Registers.DigH6);
+            Humidity[4] = (Int16)((bme280sensor.ReadRegister((byte)BME280Registers.DigH4) << 4) | (bme280sensor.ReadRegister((byte)BME280Registers.DigH4 + 1) & 0x0F));
+            Humidity[5] = (Int16)((bme280sensor.ReadRegister((byte)BME280Registers.DigH5 + 1) << 4) | ((bme280sensor.ReadRegister((byte)BME280Registers.DigH5) >> 4) & 0x0F));
+            Humidity[6] = (sbyte)bme280sensor.ReadRegister((byte)BME280Registers.DigH6);
         }
         
-        public double CalculateTemperature(long rawTemperature)
+        public double CalculateTemperature(int rawTemperature)
         {
-            var step1 = (((rawTemperature >> 3) - (Temperature[1] << 1)) * Temperature[2]) >> 11;
-            var step2 = (((((rawTemperature >> 4) - Temperature[1]) * ((rawTemperature >> 4) - Temperature[1])) >> 12) * Temperature[3]) >> 14;
-            FineTemperature = step1 + step2;
-            return ((FineTemperature * 5 + 128) >> 8) / 100.0;
+            var var1 = ((rawTemperature / 16384.0) - (Temperature[1] / 1024.0)) * Temperature[2];
+            var var2 = ((rawTemperature / 131072.0) - (Temperature[1] / 8192.0)) * Temperature[3];
+            FineTemperature = (int)(var1 + var2);
+            return (var1 + var2) / 5120.0;
         }
-        public double CalculatePressure(long rawPressure)
+        public double CalculatePressure(int rawPressure)
         {
-            long step1 = FineTemperature - 128000;
-            long step2 = step1 * step1 * Pressure[6];
-            long step3 = step2 + (step1 * (Pressure[5] << 17));
-            long step4 = step3 + (Pressure[4] << 35);
-            long step5 = ((step1 * step1 * Pressure[3]) >> 8) + ((step1 * Pressure[2]) << 12);
-            long step6 = (((1L << 47) + step5) * Pressure[1]) >> 33;
-            if (step6 == 0)
-                return 0;
-            long pressure = 1048576L - rawPressure;
-            pressure = (((pressure << 31) - step4) * 3125L) / step6;
-            long step7 = (Pressure[9] * (pressure >> 13) * (pressure >> 13)) >> 25;
-            long step8 = (Pressure[8] * pressure) >> 19;
-            pressure = ((pressure + step7 + step8) >> 8) + (Pressure[7] << 4);
-            return (pressure / 256.0);
+            double var1, var2, pressure;
+            var1 = (FineTemperature / 2.0) - 64000.0;
+            var2 = var1 * var1 * (Pressure[6] / 32768.0);
+            var2 = var2 + var1 * Pressure[5] * 2.0;
+            var2 = (var2 / 4.0) + (Pressure[4] * 65536.0);
+            var1 = (Pressure[3] * var1 * var1 / 524288.0 + Pressure[2] * var1) / 524288.0;
+            var1 = (1.0 + var1 / 32768.0) * Pressure[1];
+            if (var1 == 0)
+                return 0.0;
+            pressure = 1048576.0 - rawPressure;
+            pressure = (pressure - (var2 / 4096.0)) * 6250.0 / var1;
+            var1 = Pressure[9] * pressure * pressure / 2147483648.0;
+            var2 = pressure * Pressure[8] / 32768.0;
+            pressure = pressure + (var1 + var2 + Pressure[7]) / 16.0;
+            return pressure / 100.0;
         }
 
-        public double CalculateHumidity(long rawHumidityInput)
+        public double CalculateHumidity(int rawHumidity)
         {
-            long step1 = FineTemperature - 76800;
-            long step2 = (((rawHumidityInput << 14) - ((Humidity[4]) << 20) - (Humidity[5] * step1) + (16384L)) >> 15) * ((((((((step1 * (Humidity[6])) >> 10) * (((step1 * (Humidity[3])) >> 11) + (32768L))) >> 10) + (2097152L)) * Humidity[2]) + 8192L) >> 14);
-            long step3 = step2 - (((((step2 >> 15) * (step2 >> 15)) >> 7) * (Humidity[1])) >> 4);
-            long step4 = step3 < 0 ? 0 : step3;
-            long step5 = step4 > 419430400 ? 419430400 : step4;
-            return (step5 >> 12) / 1024.0;
+            double var;
+            var = FineTemperature - 76800.0;
+            var = (rawHumidity - (Humidity[4] * 64.0 + Humidity[5] / 16384.0 * var)) * 
+                (Humidity[2] / 65536.0 * (1.0 + Humidity[6] / 67108864.0 * var * (1.0 + Humidity[3] / 67108864.0 * var)));
+            var = var * (1.0 - Humidity[1] * var / 524288.0);
+            if (var > 100.0)
+                var = 100.0;
+            else if (var < 0.0)
+                var = 0.0;
+            return var;
         }
 
         public override string ToString()
