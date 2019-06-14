@@ -9,7 +9,6 @@ namespace AtmosphericSensors.BME280
 {
     public class BME280Compensations
     {
-
         public long[] Temperature { get; private set; } = new long[4];
         public long[] Pressure { get; private set; } = new long[10];
         public long[] Humidity { get; private set; } = new long[7];
