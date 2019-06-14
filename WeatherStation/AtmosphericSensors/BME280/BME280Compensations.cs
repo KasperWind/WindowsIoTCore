@@ -1,9 +1,6 @@
 ﻿using AtmosphericSensors.HardwareIO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AtmosphericSensors.BME280
 {
@@ -33,7 +30,7 @@ namespace AtmosphericSensors.BME280
             Pressure[1] = bme280sensor.ReadUInt16Register((byte)BME280Registers.DigP1);
             for (int i = 2; i < 10; i++)
             {
-                Pressure[i] = bme280sensor.ReadInt16Register((byte)((int)BME280Registers.DigP2 + ((i - 2) * 2)  ));
+                Pressure[i] = bme280sensor.ReadInt16Register((byte)((int)BME280Registers.DigP2 + ((i - 2) * 2)));
             }
         }
 
@@ -46,7 +43,7 @@ namespace AtmosphericSensors.BME280
             Humidity[5] = (Int16)((bme280sensor.ReadRegister((byte)BME280Registers.DigH5 + 1) << 4) | ((bme280sensor.ReadRegister((byte)BME280Registers.DigH5) >> 4) & 0x0F));
             Humidity[6] = (sbyte)bme280sensor.ReadRegister((byte)BME280Registers.DigH6);
         }
-        
+
         public double CalculateTemperature(int rawTemperature)
         {
             var var1 = ((rawTemperature / 16384.0) - (Temperature[1] / 1024.0)) * Temperature[2];
@@ -77,7 +74,7 @@ namespace AtmosphericSensors.BME280
         {
             double var;
             var = FineTemperature - 76800.0;
-            var = (rawHumidity - (Humidity[4] * 64.0 + Humidity[5] / 16384.0 * var)) * 
+            var = (rawHumidity - (Humidity[4] * 64.0 + Humidity[5] / 16384.0 * var)) *
                 (Humidity[2] / 65536.0 * (1.0 + Humidity[6] / 67108864.0 * var * (1.0 + Humidity[3] / 67108864.0 * var)));
             var = var * (1.0 - Humidity[1] * var / 524288.0);
             if (var > 100.0)
@@ -117,7 +114,7 @@ namespace AtmosphericSensors.BME280
         {
             for (int i = 0; i < Temperature.Length; i++)
             {
-                CreateArrayEntry("Temperature",sb, i, Temperature[i]);
+                CreateArrayEntry("Temperature", sb, i, Temperature[i]);
             }
         }
 
