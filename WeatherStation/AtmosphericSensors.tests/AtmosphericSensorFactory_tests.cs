@@ -8,7 +8,7 @@ using Moq;
 namespace AtmosphericSensors.tests
 {
     [TestClass]
-    public class AtmosphericSensorBME280Compensations_tests
+    public class AtmosphericSensorFactory_tests
     {
         
     }
