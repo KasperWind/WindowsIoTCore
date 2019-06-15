@@ -1,16 +1,22 @@
 ﻿namespace AtmosphericSensors
 {
-    interface IBarometricPressureSensor
+    public interface IBarometricPressureSensor
     {
         double GetBarometricPressure();
     }
-    interface IHumiditySensor
+    public interface IHumiditySensor
     {
         double GetHumidity();
     }
 
-    interface ITemperatureSensor
+    public interface ITemperatureSensor
     {
         double GetTemperature();
     }
+
+    public interface IAtmosphericSensor : IBarometricPressureSensor, IHumiditySensor, ITemperatureSensor
+    {
+
+    }
+
 }
