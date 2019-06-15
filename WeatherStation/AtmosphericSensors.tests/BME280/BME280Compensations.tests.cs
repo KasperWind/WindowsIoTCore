@@ -57,7 +57,7 @@ namespace AtmosphericSensors.tests.BME280
         [TestMethod]
         public void CreateNewInstanceCompensationWithExpectedTemperatureValues()
         {
-            BME280Compensations actualObject = new BME280Compensations(sensorMock.Object);
+            IBME280Compensations actualObject = new BME280Compensations(sensorMock.Object);
             for (int i = 1; i < actualObject.Temperature.Length; i++)
             {
                 Assert.AreEqual(expectedTemperature[i], actualObject.Temperature[i]);
@@ -67,7 +67,7 @@ namespace AtmosphericSensors.tests.BME280
         [TestMethod]
         public void CreateNewInstanceCompensationWithExpectedPressureValues()
         {
-            BME280Compensations actualObject = new BME280Compensations(sensorMock.Object);
+            IBME280Compensations actualObject = new BME280Compensations(sensorMock.Object);
             for (int i = 1; i < actualObject.Pressure.Length; i++)
             {
                 Assert.AreEqual(expectedPressure[i], actualObject.Pressure[i]);
@@ -77,7 +77,7 @@ namespace AtmosphericSensors.tests.BME280
         [TestMethod]
         public void CreateNewInstanceCompensationWithExpectedHumidityValues()
         {
-            BME280Compensations actualObject = new BME280Compensations(sensorMock.Object);
+            IBME280Compensations actualObject = new BME280Compensations(sensorMock.Object);
             for (int i = 1; i < actualObject.Humidity.Length; i++)
             {
                 Assert.AreEqual(expectedHumitidy[i], actualObject.Humidity[i]);
