@@ -1,6 +1,6 @@
 ﻿namespace AtmosphericSensors
 {
-    enum AtmosphericSensors
+    public enum AtmosphericSensors
     {
         BME280,
     }
