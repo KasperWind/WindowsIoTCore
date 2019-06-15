@@ -9,16 +9,12 @@ using AtmosphericSensors.HardwareIO;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-[assembly: InternalsVisibleTo("AtmosphericSensors.tests")]
 namespace AtmosphericSensors.BME280
 {
     public class BME280 : ITemperatureSensor, IBarometricPressureSensor, IHumiditySensor
     {
         private readonly II2cSensor bme280sensor;
         private readonly BME280Compensations compensations;
-
-        private DateTimeOffset lastReading = DateTimeOffset.MinValue;
-        private const int minTimeBetweenReadings = 500;
 
         private int rawTemperature = 0;
         private int rawHumidity = 0;
@@ -31,7 +27,7 @@ namespace AtmosphericSensors.BME280
             WriteControl();
             WriteHumidityControl();
             TryBurstRead();
-            Debug.WriteLine("AthomspericSensorFinishedLoading: {0}", bme280sensor.ReadRegister((byte)BME280Registers.ChipId));
+            Debug.WriteLine("AthomspericSensorFinishedLoading i2c device with ID: {0}", bme280sensor.ReadRegister((byte)BME280Registers.ChipId));
             Debug.Write("\t");
             Debug.WriteLine(compensations.ToString());
         }
@@ -57,13 +53,13 @@ namespace AtmosphericSensors.BME280
         internal void WriteControl()
         {
             bme280sensor.WriteRegister((byte)BME280Registers.Control, new byte[] { 0x3F });
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(5);
         }
 
         internal void WriteHumidityControl()
         {
             bme280sensor.WriteRegister((byte)BME280Registers.ControlHumid, new byte[] { 0x03 });
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(5);
         }
 
         internal void TryBurstRead()
@@ -71,12 +67,11 @@ namespace AtmosphericSensors.BME280
             try
             {
                 BurstReadParameters();
-                lastReading = DateTimeOffset.Now;
+                Debug.WriteLine("Uncompensated readings after burst reading Temperature: {0}; Humidity: {1}; Pressure: {2}", rawTemperature, rawHumidity, rawPressure);
             }
             catch (Exception ex) 
             {
                 Debug.WriteLine("Error burst read: {0}", ex.Message);
-                lastReading = DateTimeOffset.MinValue;
             }
         }
 
@@ -85,7 +80,6 @@ namespace AtmosphericSensors.BME280
             ReadRawTemperature();
             ReadRawHumidity();
             ReadRawPressure();
-            compensations.CalculateTemperature(rawTemperature);
         }
 
         internal void ReadRawTemperature()
