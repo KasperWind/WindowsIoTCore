@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AtmosphericSensors.BME280
 {
-    public class BME280Compensations
+    public class BME280Compensations : IBME280Compensations
     {
         public long[] Temperature { get; private set; } = new long[4];
         public long[] Pressure { get; private set; } = new long[10];
@@ -46,11 +46,17 @@ namespace AtmosphericSensors.BME280
 
         public double CalculateTemperature(int rawTemperature)
         {
+            CalculateFineTemperature(rawTemperature);
+            return FineTemperature / 5120.0;
+        }
+
+        public void CalculateFineTemperature(int rawTemperature)
+        {
             var var1 = ((rawTemperature / 16384.0) - (Temperature[1] / 1024.0)) * Temperature[2];
             var var2 = ((rawTemperature / 131072.0) - (Temperature[1] / 8192.0)) * Temperature[3];
             FineTemperature = (int)(var1 + var2);
-            return (var1 + var2) / 5120.0;
         }
+
         public double CalculatePressure(int rawPressure)
         {
             double var1, var2, pressure;

@@ -14,16 +14,16 @@ namespace AtmosphericSensors.BME280
     public class BME280 : ITemperatureSensor, IBarometricPressureSensor, IHumiditySensor
     {
         private readonly II2cSensor bme280sensor;
-        private readonly BME280Compensations compensations;
+        private readonly IBME280Compensations compensations;
 
         private int rawTemperature = 0;
         private int rawHumidity = 0;
         private int rawPressure = 0;
         
-        public BME280(II2cSensor bme280sensor) //0x77
+        public BME280(II2cSensor bme280sensor, IBME280Compensations compensations) //0x77
         {
             this.bme280sensor = bme280sensor;
-            compensations = new BME280Compensations(bme280sensor);
+            this.compensations = compensations;
             WriteControl();
             WriteHumidityControl();
             TryBurstRead();
