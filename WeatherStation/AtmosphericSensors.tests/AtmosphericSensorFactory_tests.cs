@@ -10,6 +10,11 @@ namespace AtmosphericSensors.tests
     [TestClass]
     public class AtmosphericSensorFactory_tests
     {
-        
+        [TestMethod]
+        public void GetBME280AtmosphericSensor()
+        {
+            var bme280 = AtmosphericSensorFactory.CreateSensor(AtmosphericSensors.BME280);
+
+        }
     }
 }

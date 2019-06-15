@@ -1,6 +1,6 @@
 ﻿namespace AtmosphericSensors.tests
 {
-    internal class AtmosphericSensorFactory
+    public class AtmosphericSensorFactory
     {
     }
 }

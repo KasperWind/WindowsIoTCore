@@ -120,6 +120,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AtmosphericSensorFactory.cs" />
     <Compile Include="AtmosphericSensors.cs" />
     <Compile Include="BME280\BME280.cs" />
     <Compile Include="BME280\BME280Compensations.cs" />
