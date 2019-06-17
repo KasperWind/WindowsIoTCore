@@ -3,6 +3,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AtmosphericSensors.HardwareIO;
 using AtmosphericSensors;
+using AtmosphericSensors.BME280;
 using Moq;
 
 namespace AtmosphericSensors.tests
@@ -11,10 +12,18 @@ namespace AtmosphericSensors.tests
     public class AtmosphericSensorFactory_tests
     {
         [TestMethod]
-        public void GetBME280AtmosphericSensor()
+        public void BME280_ThrowsWhenAddressIsOutsideLimit()
         {
-            var bme280 = AtmosphericSensorFactory.CreateSensor(AtmosphericSensors.BME280);
-
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+                AtmosphericSensorFactory.CreateSensor(AtmosphericSensorTypes.BME280, -1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+                AtmosphericSensorFactory.CreateSensor(AtmosphericSensorTypes.BME280, 256));
+        }
+        [TestMethod]
+        public void CreateSensorThrowsAtUnknownType()
+        {
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+                AtmosphericSensorFactory.CreateSensor((AtmosphericSensorTypes)(-1), 0));
         }
     }
 }

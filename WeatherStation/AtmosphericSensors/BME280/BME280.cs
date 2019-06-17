@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace AtmosphericSensors.BME280
 {
-    public class BME280 : ITemperatureSensor, IBarometricPressureSensor, IHumiditySensor
+    public class BME280 : IAtmosphericSensor
     {
         private readonly II2cSensor bme280sensor;
         private readonly IBME280Compensations compensations;

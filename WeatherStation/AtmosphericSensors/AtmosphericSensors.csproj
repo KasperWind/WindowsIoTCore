@@ -121,7 +121,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AtmosphericSensorFactory.cs" />
-    <Compile Include="AtmosphericSensors.cs" />
+    <Compile Include="AtmosphericSensorTypes.cs" />
     <Compile Include="BME280\BME280.cs" />
     <Compile Include="BME280\BME280Compensations.cs" />
     <Compile Include="BME280\BME280Registers.cs" />
