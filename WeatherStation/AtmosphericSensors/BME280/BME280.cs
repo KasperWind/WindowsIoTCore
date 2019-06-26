@@ -67,7 +67,6 @@ namespace AtmosphericSensors.BME280
             try
             {
                 BurstReadParameters();
-                Debug.WriteLine("Uncompensated readings after burst reading Temperature: {0}; Humidity: {1}; Pressure: {2}", rawTemperature, rawHumidity, rawPressure);
             }
             catch (Exception ex) 
             {
